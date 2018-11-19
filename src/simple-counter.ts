@@ -1,34 +1,34 @@
 const servers: { [pid: number]: SimpleCounter } = {};
-const names: { [name: string]: number } = {};
+
+interface Opts {
+  max?: number;
+  name?: string;
+}
 
 export default class SimpleCounter {
-  static startLink(opts: any = {}) {
+  static startLink(opts: Opts = {}) {
     const counter = new SimpleCounter(opts);
-    const pid = newPid();
+    const pid = Math.random();
 
     servers[pid] = counter;
-
-    if (opts.name) {
-      names[opts.name] = pid;
-    }
 
     return pid;
   }
 
-  static increment(pidOrName: string | number): number {
-    const counter = findCounter(pidOrName);
+  static increment(pid: number | string): number {
+    const counter = servers[pid];
 
     return counter.handleIncrement();
   }
 
-  static get(pidOrName: string | number): number {
-    const counter = findCounter(pidOrName);
+  static get(pid: number | string): number {
+    const counter = servers[pid];
 
     return counter.handleGet();
   }
 
-  static clear(pidOrName: string | number): void {
-    const counter = findCounter(pidOrName);
+  static clear(pid: number | string): void {
+    const counter = servers[pid];
 
     counter.handleReset();
   }
@@ -36,7 +36,7 @@ export default class SimpleCounter {
   counter: number;
   max: number;
 
-  constructor({ max }: { max?: number }) {
+  constructor({ max }: Opts) {
     this.counter = 0;
     this.max = max || 10;
   }
@@ -65,16 +65,3 @@ export default class SimpleCounter {
     setTimeout(() => (this.counter = 0));
   }
 }
-
-const newPid = () => Math.random();
-
-const findCounter = (pidOrName: string | number): SimpleCounter => {
-  const pid = names[pidOrName] || pidOrName;
-  const counter = servers[pid];
-
-  if (!counter) {
-    throw new Error(`pid ${pidOrName} not found`);
-  }
-
-  return counter;
-};

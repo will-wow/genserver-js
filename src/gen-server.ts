@@ -23,10 +23,11 @@ interface Opts {
 export const startLink = (module: Module, args: any = {}, opts: Opts = {}) => {
   const counter = new module(args);
   const pid = newPid();
+
   servers[pid] = counter;
 
   if (opts.name) {
-    names[name] = pid;
+    names[opts.name] = pid;
   }
 
   return pid;
@@ -48,7 +49,7 @@ export const cast = (pid: Pid, action: string, args?: any) => {
 
 export const stop = (pid: Pid): void => {
   delete servers[pid];
-  delete servers[name];
+  delete names[pid];
 };
 
 const newPid = () => Math.random();

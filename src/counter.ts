@@ -1,8 +1,13 @@
 import * as GenServer from "./gen-server";
 
+interface Opts {
+  max?: number;
+  name?: string;
+}
+
 export default class Counter extends GenServer.t {
-  static startLink(opts: any = {}): number {
-    return GenServer.startLink(Counter, [], opts);
+  static startLink(opts: Opts = {}): number {
+    return GenServer.startLink(Counter, opts, opts);
   }
 
   static increment(pid: GenServer.Pid): number {
@@ -20,7 +25,7 @@ export default class Counter extends GenServer.t {
   counter: number;
   max: number;
 
-  constructor({ max }: { max?: number }) {
+  constructor({ max }: Opts) {
     super();
 
     this.counter = 0;

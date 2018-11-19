@@ -4,15 +4,15 @@ import * as GenServer from "./gen-server";
 
 [Counter, SimpleCounter].forEach(counter => {
   describe(counter, () => {
-    describe("given a counter", () => {
-      let pid: number;
+    let pid: number;
 
+    afterEach(() => {
+      GenServer.stop(pid);
+    });
+
+    describe("given a counter", () => {
       beforeEach(() => {
         pid = counter.startLink();
-      });
-
-      afterEach(() => {
-        GenServer.stop(pid);
       });
 
       it("starts at 0", () => {
@@ -25,7 +25,7 @@ import * as GenServer from "./gen-server";
         expect(counter.get(pid)).toEqual(2);
       });
 
-      it("casts to clear", (done) => {
+      it("casts to clear", done => {
         counter.increment(pid);
 
         // Has a value
@@ -44,5 +44,27 @@ import * as GenServer from "./gen-server";
         }, 100);
       });
     });
+
+    it("maxes out", () => {
+      pid = counter.startLink({ max: 2 });
+
+      expect(counter.increment(pid)).toEqual(1);
+      expect(counter.increment(pid)).toEqual(2);
+      // Maxed out
+      expect(counter.increment(pid)).toEqual(2);
+    });
+  });
+});
+
+describe(Counter, () => {
+  it("works with a name and a pid", () => {
+    const pid = Counter.startLink({ name: "foo" });
+
+    expect(Counter.get("foo")).toEqual(0);
+    expect(Counter.get(pid)).toEqual(0);
+
+    GenServer.stop("foo");
+
+    expect(() => Counter.get("foo")).toThrow();
   });
 });
