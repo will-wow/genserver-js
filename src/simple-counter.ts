@@ -1,9 +1,9 @@
-const servers: { [pid: number]: Counter } = {};
+const servers: { [pid: number]: SimpleCounter } = {};
 const names: { [name: string]: number } = {};
 
-export default class Counter {
-  static startLink(opts: any) {
-    const counter = new Counter(opts);
+export default class SimpleCounter {
+  static startLink(opts: any = {}) {
+    const counter = new SimpleCounter(opts);
     const pid = newPid();
 
     servers[pid] = counter;
@@ -18,13 +18,19 @@ export default class Counter {
   static increment(pidOrName: string | number): number {
     const counter = findCounter(pidOrName);
 
-    return counter.handleCallIncrement();
+    return counter.handleIncrement();
+  }
+
+  static get(pidOrName: string | number): number {
+    const counter = findCounter(pidOrName);
+
+    return counter.handleGet();
   }
 
   static clear(pidOrName: string | number): void {
     const counter = findCounter(pidOrName);
 
-    counter.handleCastReset();
+    counter.handleReset();
   }
 
   counter: number;
@@ -32,10 +38,10 @@ export default class Counter {
 
   constructor({ max }: { max?: number }) {
     this.counter = 0;
-    this.max = max || 0;
+    this.max = max || 10;
   }
 
-  handleCallIncrement = () => {
+  handleIncrement = () => {
     const { counter, max } = this;
 
     const newCounter = counter + 1;
@@ -50,14 +56,19 @@ export default class Counter {
     }
   };
 
-  handleCastReset = () => {
+  handleGet = () => {
+    const { counter } = this;
+    return counter;
+  };
+
+  handleReset = () => {
     setTimeout(() => (this.counter = 0));
   };
 }
 
 const newPid = () => Math.random();
 
-const findCounter = (pidOrName: string | number): Counter => {
+const findCounter = (pidOrName: string | number): SimpleCounter => {
   const pid = names[pidOrName] || pidOrName;
   const counter = servers[pid];
 

@@ -1,12 +1,16 @@
 import * as GenServer from "./gen-server";
 
 export default class Counter extends GenServer.t {
-  static startLink(opts: any) {
-    GenServer.startLink(Counter, [], opts);
+  static startLink(opts: any = {}): number {
+    return GenServer.startLink(Counter, [], opts);
   }
 
   static increment(pid: GenServer.Pid): number {
     return GenServer.call(pid, "increment");
+  }
+
+  static get(pid: GenServer.Pid): number {
+    return GenServer.call(pid, "get");
   }
 
   static clear(pid: GenServer.Pid): void {
@@ -20,13 +24,16 @@ export default class Counter extends GenServer.t {
     super();
 
     this.counter = 0;
-    this.max = max || 0;
+    this.max = max || 10;
   }
 
   handleCall(action: string) {
     const { counter, max } = this;
 
     switch (action) {
+      case "get": {
+        return counter;
+      }
       case "increment": {
         const newCounter = counter + 1;
 
@@ -46,20 +53,12 @@ export default class Counter extends GenServer.t {
   }
 
   handleCast(action: string) {
-    const { counter, max } = this;
-
     switch (action) {
-      case "increment": {
-        const newCounter = counter + 1;
-
-        if (newCounter <= max) {
-          this.counter = newCounter;
-
-          return newCounter;
-        }
+      case "clear": {
+        this.counter = 0;
       }
       default: {
-        return counter;
+        return this.counter;
       }
     }
   }

@@ -41,7 +41,14 @@ export const call = (pid: Pid, action: string, args?: any) => {
 export const cast = (pid: Pid, action: string, args?: any) => {
   const server = findServer(pid);
 
-  return server.handleCast(action, args);
+  setTimeout(() => {
+    server.handleCast(action, args);
+  });
+};
+
+export const stop = (pid: Pid): void => {
+  delete servers[pid];
+  delete servers[name];
 };
 
 const newPid = () => Math.random();
