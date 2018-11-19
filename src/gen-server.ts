@@ -2,10 +2,10 @@ const servers: { [pid: number]: t } = {};
 const names: { [name: string]: number } = {};
 
 export class t {
-  handleCall(action: string, args?: any): any {
+  handleCall(_action: string, _args?: any): any {
     throw new Error("Not implemented");
   }
-  handleCast(action: string, args?: any): any {
+  handleCast(_action: string, _args?: any): any {
     throw new Error("Not implemented");
   }
 }

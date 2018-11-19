@@ -3,7 +3,14 @@
     "member-access": [true, "no-public"],
     "ordered-imports": false,
     "class-name": false,
-    "interface-name": [true, "never-prefix"]
+    "interface-name": [true, "never-prefix"],
+    "variable-name": [
+      true,
+      "check-format",
+      "ban-keywords",
+      "allow-leading-underscore"
+    ],
+    "no-unused-variable": [true, { "ignore-pattern": "^_" }]
   },
   "extends": ["tslint:recommended", "tslint-config-prettier"],
   "linterOptions": {
