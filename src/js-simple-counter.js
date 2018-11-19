@@ -1,12 +1,7 @@
-const servers: { [pid: number]: SimpleCounter } = {};
-
-interface Opts {
-  max?: number;
-  name?: string;
-}
+const servers = {};
 
 export default class SimpleCounter {
-  static startLink(opts: Opts = {}) {
+  static startLink(opts) {
     const counter = new SimpleCounter(opts);
     const pid = Math.random();
 
@@ -15,42 +10,40 @@ export default class SimpleCounter {
     return pid;
   }
 
-  static increment(pid: number | string, by: number = 1): number {
+  static increment(pid) {
     const counter = servers[pid];
 
-    return counter.handleIncrement(by);
+    return counter.handleIncrement();
   }
 
-  static get(pid: number | string): number {
+  static get(pid) {
     const counter = servers[pid];
 
     return counter.handleGet();
   }
 
-  static clear(pid: number | string): void {
+  static clear(pid) {
     const counter = servers[pid];
 
     counter.handleReset();
   }
 
-  counter: number;
-  max: number;
-
-  constructor({ max }: Opts) {
+  constructor({ max }) {
     this.counter = 0;
     this.max = max || 10;
   }
 
-  handleIncrement(by: number) {
+  handleIncrement() {
     const { counter, max } = this;
 
-    const newCounter = counter + by;
+    const newCounter = counter + 1;
 
     if (newCounter <= max) {
       this.counter = newCounter;
 
       return newCounter;
     } else {
+      // TODO
       return counter;
     }
   }

@@ -43,6 +43,11 @@ import * as GenServer from "./gen-server";
           done();
         }, 100);
       });
+
+      it("increments by", () => {
+        expect(counter.increment(pid, 2)).toEqual(2);
+        expect(counter.increment(pid, 2)).toEqual(4);
+      });
     });
 
     it("maxes out", () => {
