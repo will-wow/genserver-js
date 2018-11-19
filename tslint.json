@@ -1,9 +1,11 @@
 {
   "rules": {
     "member-access": [true, "no-public"],
-    "ordered-imports": false
+    "ordered-imports": false,
+    "class-name": false,
+    "interface-name": [true, "never-prefix"]
   },
-  "extends": ["tslint-react", "tslint:recommended", "tslint-config-prettier"],
+  "extends": ["tslint:recommended", "tslint-config-prettier"],
   "linterOptions": {
     "exclude": ["node_modules/**/*.ts", "coverage/lcov-report/*.js"]
   }

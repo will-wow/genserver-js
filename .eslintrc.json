@@ -12,8 +12,5 @@
     "no-var": "error",
     "prettier/prettier": "error"
   },
-  "extends": [
-    "eslint:recommended",
-    "prettier"
-  ]
+  "extends": ["prettier"]
 }

@@ -24,11 +24,10 @@
   },
   "scripts": {
     "format": "npm-run-all -c lint:*",
-    "lint:eslint": "eslint 'src/**/*.{js,jsx}'",
+    "lint:eslint": "eslint --fix 'src/**/*.{js,jsx}'",
     "lint:prettier": "prettier --write **/*.{js,jsx,ts,tsx,css,scss,json,md}",
-    "lint:stylelint": "stylelint src/**/*.scss",
-    "lint:tslint": "tslint 'src/**/*.{ts,tsx}'",
-    "test": "react-scripts-ts test --env=jsdom",
+    "lint:tslint": "tslint --fix 'src/**/*.{ts,tsx}'",
+    "test": "",
     "precommit": "lint-staged"
   },
   "lint-staged": {
