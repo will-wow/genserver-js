@@ -41,7 +41,7 @@ export default class SimpleCounter {
     this.max = max || 10;
   }
 
-  handleIncrement = () => {
+  handleIncrement() {
     const { counter, max } = this;
 
     const newCounter = counter + 1;
@@ -54,16 +54,16 @@ export default class SimpleCounter {
       // TODO
       return counter;
     }
-  };
+  }
 
-  handleGet = () => {
+  handleGet() {
     const { counter } = this;
     return counter;
-  };
+  }
 
-  handleReset = () => {
+  handleReset() {
     setTimeout(() => (this.counter = 0));
-  };
+  }
 }
 
 const newPid = () => Math.random();
